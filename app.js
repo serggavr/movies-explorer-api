@@ -9,9 +9,7 @@ const {
   errors,
 } = require('celebrate');
 
-const { auth } = require('./middlewares/auth');
 const { errorHandler } = require('./middlewares/errorHandler');
-const { NotFoundError } = require('./constants/errors');
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
 
 const {
@@ -31,9 +29,6 @@ app.use(cors({
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
 }));
 
-// mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
-//   useNewUrlParser: true,
-// });
 mongoose.connect(process.env.NODE_ENV === 'production' ? process.env.MONGO_DB : 'mongodb://localhost:27017/dev_bitfilmsdb', {
   useNewUrlParser: true,
 });
@@ -50,17 +45,9 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.use(require('./routes/sign'));
-
-app.use(auth);
-
-app.use('/users', require('./routes/users'));
-app.use('/movies', require('./routes/movies'));
-
-app.use('/*', (req, res, next) => next(new NotFoundError('Страница не найдена')));
+app.use(require('./routes'));
 
 app.use(errorLogger);
-
 app.use(errors());
 app.use(errorHandler);
 
