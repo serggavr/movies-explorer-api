@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { celebrate, Joi, Segments } = require('celebrate');
 
-const { linkValidationPattern } = require('../constants/validationPattern');
+const { linkValidationPattern, idValidationPattern } = require('../constants/validationPattern');
 const {
   createMovie,
   getSavedMovies,
@@ -10,9 +10,9 @@ const {
 
 router.get('/', getSavedMovies);
 
-router.delete('/:movieId', celebrate({
+router.delete('/:id', celebrate({
   [Segments.PARAMS]: Joi.object().keys({
-    movieId: Joi.number().required(),
+    id: Joi.string().required().regex(idValidationPattern),
   }),
 }), deleteMovie);
 

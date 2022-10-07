@@ -55,7 +55,7 @@ module.exports.getSavedMovies = (req, res, next) => {
 };
 
 module.exports.deleteMovie = (req, res, next) => {
-  Movie.findOne({ movieId: req.params.movieId })
+  Movie.findById(req.params.id)
     .then((movie) => {
       if (movie) {
         if (movie.owner.toString() === req.user._id.toString()) {
@@ -66,7 +66,7 @@ module.exports.deleteMovie = (req, res, next) => {
           next(new ForbiddenError('Доступ запрещен'));
         }
       } else {
-        next(new NotFoundError(`Фильм c id: ${req.params.cardId} не найдена`));
+        next(new NotFoundError(`Фильм c id: ${req.params.id} не найдена`));
       }
     })
     .catch((err) => {
