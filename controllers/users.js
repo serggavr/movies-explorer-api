@@ -30,12 +30,12 @@ module.exports.createUser = (req, res, next) => {
         })
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            return next(new CastError(`Переданы некорректные данные при создании пользователя. Поле${err.message.replace('user validation failed:', '').replace(':', '')}`));
+            next(new CastError(`Переданы некорректные данные при создании пользователя. Поле${err.message.replace('user validation failed:', '').replace(':', '')}`));
           }
           if (err.code === 11000) {
-            return next(new ConflictError(`Пользователь с email '${err.keyValue.email}' уже зарегистрирован`));
+            next(new ConflictError(`Пользователь с email '${err.keyValue.email}' уже зарегистрирован`));
           }
-          return next(new ServerError('Произошла ошибка'));
+          next(new ServerError('Произошла ошибка'));
         });
     })
     .catch(() => {
@@ -78,13 +78,13 @@ module.exports.getCurrentUserInfo = (req, res, next) => {
       if (user) {
         return res.send(user);
       }
-      return next(new NotFoundError(`Пользователь ${req.user} не найден`));
+      next(new NotFoundError(`Пользователь ${req.user} не найден`));
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new CastError('Передан некорректный id пользователя'));
+        next(new CastError('Передан некорректный id пользователя'));
       }
-      return next(new ServerError('Произошла ошибка'));
+      next(new ServerError('Произошла ошибка'));
     });
 };
 
@@ -97,7 +97,7 @@ module.exports.editUser = (req, res, next) => {
   User.findById(owner)
     .then((userFound) => {
       if (!userFound) {
-        return next(new NotFoundError(`Пользователь c id: ${owner} не найден`));
+        next(new NotFoundError(`Пользователь c id: ${owner} не найден`));
       }
       // User.find
       return User.findByIdAndUpdate(owner, {
@@ -118,8 +118,8 @@ module.exports.editUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new CastError('Передан некорректный id при обновлении профиля'));
+        next(new CastError('Передан некорректный id при обновлении профиля'));
       }
-      return next(new ServerError('Произошла ошибка'));
+      next(new ServerError('Произошла ошибка'));
     });
 };

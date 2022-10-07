@@ -40,9 +40,9 @@ module.exports.createMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return next(new CastError(`Переданы некорректные данные при добавлении фильма. Поле${err.message.replace('movie validation failed:', '').replace(':', '')}`));
+        next(new CastError(`Переданы некорректные данные при добавлении фильма. Поле${err.message.replace('movie validation failed:', '').replace(':', '')}`));
       }
-      return next(new ServerError('Произошла ошибка'));
+      next(new ServerError('Произошла ошибка'));
     });
 };
 
@@ -71,8 +71,8 @@ module.exports.deleteMovie = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new CastError('Переданы некорректные данные при удалении фильма'));
+        next(new CastError('Переданы некорректные данные при удалении фильма'));
       }
-      return next(new ServerError('Произошла ошибка'));
+      next(new ServerError('Произошла ошибка'));
     });
 };
