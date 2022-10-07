@@ -31,7 +31,10 @@ app.use(cors({
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
 }));
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+// mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+//   useNewUrlParser: true,
+// });
+mongoose.connect(process.env.NODE_ENV === 'production' ? process.env.MONGO_DB : 'mongodb://localhost:27017/dev_bitfilmsdb', {
   useNewUrlParser: true,
 });
 
