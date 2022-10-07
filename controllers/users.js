@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -65,12 +64,11 @@ module.exports.login = (req, res, next) => {
     });
 };
 
-// eslint-disable-next-line consistent-return
 module.exports.signout = (req, res, next) => {
   try {
     res.clearCookie('jwt').status(200).send({ message: 'SignOut' });
   } catch (err) {
-    return next(new ServerError('Произошла ошибка'));
+    next(new ServerError('Произошла ошибка'));
   }
 };
 
@@ -110,7 +108,7 @@ module.exports.editUser = (req, res, next) => {
         })
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            return next(new CastError(`Переданы некорректные данные при обновлении профиля. Поле${err.message.replace('Validation failed:', '').replace(':', '')}`));
+            next(new CastError(`Переданы некорректные данные при обновлении профиля. Поле${err.message.replace('Validation failed:', '').replace(':', '')}`));
           }
         });
     })

@@ -1,8 +1,8 @@
-// eslint-disable-next-line consistent-return
 module.exports.errorHandler = (err, req, res, next) => {
   if (!err.statusCode) {
-    return res.status(500).json({ message: 'Непредвиденная ошибка' });
+    res.status(500).json({ message: 'Непредвиденная ошибка' });
+  } else {
+    res.status(err.statusCode).json({ message: err.message });
+    next();
   }
-  res.status(err.statusCode).json({ message: err.message });
-  next();
 };

@@ -83,6 +83,5 @@ app.use(errors());
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`App listening on port ${PORT}, ${process.env.NODE_ENV === 'NODE_ENV = production' ? 'production' : 'NODE_ENV = dev'}`);
+  console.log(`App listening on port ${PORT}, ${process.env.NODE_ENV === 'production' ? 'NODE_ENV = production' : 'NODE_ENV = dev'}`);
 });

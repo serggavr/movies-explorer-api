@@ -56,7 +56,6 @@ module.exports.getSavedMovies = (req, res, next) => {
 
 module.exports.deleteMovie = (req, res, next) => {
   Movie.findOne({ movieId: req.params.movieId })
-    // eslint-disable-next-line consistent-return
     .then((movie) => {
       if (movie) {
         if (movie.owner.toString() === req.user._id.toString()) {
@@ -64,10 +63,10 @@ module.exports.deleteMovie = (req, res, next) => {
             .then(() => res.send({ message: 'Фильм удален' }))
             .catch(() => next(new ServerError('Произошла ошибка')));
         } else {
-          return next(new ForbiddenError('Доступ запрещен'));
+          next(new ForbiddenError('Доступ запрещен'));
         }
       } else {
-        return next(new NotFoundError(`Фильм c id: ${req.params.cardId} не найдена`));
+        next(new NotFoundError(`Фильм c id: ${req.params.cardId} не найдена`));
       }
     })
     .catch((err) => {

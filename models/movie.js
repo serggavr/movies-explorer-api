@@ -54,7 +54,6 @@ const movieSchema = new mongoose.Schema({
   },
 });
 
-// eslint-disable-next-line func-names
 const urlValidator = function (value) {
   return linkValidationPattern.test(value);
 };
