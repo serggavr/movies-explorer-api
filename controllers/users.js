@@ -99,6 +99,7 @@ module.exports.editUser = (req, res, next) => {
       if (!userFound) {
         return next(new NotFoundError(`Пользователь c id: ${owner} не найден`));
       }
+      // User.find
       return User.findByIdAndUpdate(owner, {
         name,
         email,
@@ -109,6 +110,9 @@ module.exports.editUser = (req, res, next) => {
         .catch((err) => {
           if (err.name === 'ValidationError') {
             next(new CastError(`Переданы некорректные данные при обновлении профиля. Поле${err.message.replace('Validation failed:', '').replace(':', '')}`));
+          }
+          if (err.code === 11000) {
+            next(new ConflictError(`Пользователь с email '${err.keyValue.email}' уже зарегистрирован`));
           }
         });
     })
