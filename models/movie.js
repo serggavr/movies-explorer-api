@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { linkValidationPattern } = require('../constants/validationPattern');
+const validator = require('validator');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -25,14 +25,29 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     require: [true, 'обязательно для заполнения'],
+    validate(value) {
+      if (!validator.isURL(value)) {
+        throw new Error('Не верный формат ссылки на постер к фильму');
+      }
+    },
   },
   trailerLink: {
     type: String,
     require: [true, 'обязательно для заполнения'],
+    validate(value) {
+      if (!validator.isURL(value)) {
+        throw new Error('Не верный формат ссылки на трейлер к фильму');
+      }
+    },
   },
   thumbnail: {
     type: String,
     require: [true, 'обязательно для заполнения'],
+    validate(value) {
+      if (!validator.isURL(value)) {
+        throw new Error('Не верный формат ссылки на миниатюру постера к фильму');
+      }
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
@@ -53,13 +68,5 @@ const movieSchema = new mongoose.Schema({
     require: [true, 'обязательно для заполнения'],
   },
 });
-
-const urlValidator = function (value) {
-  return linkValidationPattern.test(value);
-};
-
-movieSchema.path('image').validate(urlValidator, 'error');
-movieSchema.path('trailerLink').validate(urlValidator, 'error');
-movieSchema.path('thumbnail').validate(urlValidator, 'error');
 
 module.exports = mongoose.model('movie', movieSchema);
