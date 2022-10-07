@@ -6,17 +6,12 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 const {
-  celebrate,
-  Joi,
-  Segments,
   errors,
 } = require('celebrate');
 
 const { auth } = require('./middlewares/auth');
-const { login, createUser, signout } = require('./controllers/users');
 const { errorHandler } = require('./middlewares/errorHandler');
 const { NotFoundError } = require('./constants/errors');
-// const { linkValidationPattern } = require('./constants/validationPattern');
 const { requestLogger, errorLogger } = require('./middlewares/Logger');
 
 const {
@@ -27,8 +22,8 @@ const app = express();
 
 app.use(cors({
   origin: ['http://localhost:3001',
-    // 'https://nomorefrontend.nomoredomains.sbs',
-    // 'http://nomorefrontend.nomoredomains.sbs',
+    // 'https://nomore.nomoredomains.icu',
+    // 'http://nomore.nomoredomains.icu',
   ],
   credentials: true,
   exposedHeaders: '*',
@@ -52,26 +47,10 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signup', celebrate({
-  [Segments.BODY]: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    // about: Joi.string().min(2).max(30),
-    // avatar: Joi.string().regex(linkValidationPattern),
-    password: Joi.string().required(),
-    email: Joi.string().required().email(),
-  }),
-}), createUser);
-
-app.post('/signin', celebrate({
-  [Segments.BODY]: Joi.object().keys({
-    password: Joi.string().required(),
-    email: Joi.string().required().email(),
-  }),
-}), login);
+app.use(require('./routes/sign'));
 
 app.use(auth);
 
-app.post('/signout', signout);
 app.use('/users', require('./routes/users'));
 app.use('/movies', require('./routes/movies'));
 
