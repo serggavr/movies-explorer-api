@@ -76,7 +76,7 @@ module.exports.getCurrentUserInfo = (req, res, next) => {
   User.findById(req.user)
     .then((user) => {
       if (user) {
-        return res.send(user);
+        res.send(user);
       }
       next(new NotFoundError(`Пользователь ${req.user} не найден`));
     })
