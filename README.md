@@ -9,7 +9,11 @@ Movies-explorer - Веб приложение позволяющее польз�
 
 Фронтенд был сверстан по [Макету в Figma](https://disk.yandex.ru/d/rFmn7fjNt24-Fw )
 
-Запуск: ``` npm run start ```
+Запуск: 
+``` 
+npm install
+npm run start
+```
 
 -----
 ### Зависимости:
@@ -28,6 +32,12 @@ Movies-explorer - Веб приложение позволяющее польз�
     "mongoose": "^6.5.2",
     "validator": "^13.7.0",
     "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "eslint": "^8.22.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.20"
   }
 ```
 
